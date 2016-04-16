@@ -2,7 +2,7 @@
 
 namespace Md\CatHacks\Types;
 
-class None<T> implements Option<T>
+final class None<T> implements Option<T>
 {
     public function __toString()
     {

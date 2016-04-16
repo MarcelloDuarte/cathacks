@@ -1,6 +1,6 @@
 <?hh
 
-use Md\CatHacks\Types\{Some,None};
+use Md\CatHacks\Types\{Some,None,Option};
 
 function Some<T>(T $t): Some<T>
 {
