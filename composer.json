@@ -1,0 +1,15 @@
+{
+    "name": "md/cathacks",
+    "require-dev": {
+        "phpspec/phpspec": "~2.5"
+    },
+    "autoload": {
+        "psr-0": {
+            "": ["src/"]
+        },
+        "files": ["src/Md/CatHacks/TypeConstructors.hh"]
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
