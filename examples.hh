@@ -7,3 +7,5 @@ echo None();
 
 echo Some(1)->map($x ==> $x + 1);
 echo None()->map($x ==> $x + 1);
+echo Option(42);
+echo Option(null);

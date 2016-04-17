@@ -7,6 +7,11 @@ use Prophecy\Argument;
 
 class NoneSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedThrough('instance');
+    }
+
     function it_is_an_option()
     {
         $this->shouldHaveType('Md\CatHacks\Types\Option');
