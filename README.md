@@ -1,4 +1,5 @@
-# CatHacks
+CatHacks
+========
 
 A library of functional structures in HackLang
 
