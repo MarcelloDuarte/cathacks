@@ -14,7 +14,7 @@ echo Some(1)->map($x ==> $x + 1);
 echo None()->map($x ==> $x + 1);
 
 // option apply with map2
-echo Some(1)->map2(Some(2), function($x, $y) { return $x + $y; });
+echo Some(1)->map2(Some(2), ($x, $y) ==> $x + $y);
 echo Some(1)->apply(Some($x ==> $x + 3));
 
 $from = (new AccountService)->findAccount(1);

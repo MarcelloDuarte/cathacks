@@ -4,8 +4,6 @@ CatHacks
 A library of functional structures in HackLang
 
 ```hack
-<?hh
-
 require_once "vendor/autoload.php";
 
 echo Some(1);
@@ -20,7 +18,7 @@ echo Some(1)->map($x ==> $x + 1);
 echo None()->map($x ==> $x + 1);
 
 // option apply with map2
-echo Some(1)->map2(Some(2), function($x, $y) { return $x + $y; });
+echo Some(1)->map2(Some(2), ($x, $y) ==> $x + $y);
 echo Some(1)->apply(Some($x ==> $x + 3));
 
 $from = (new AccountService)->findAccount(1);
@@ -29,14 +27,12 @@ $to = (new AccountService)->findAccount(2);
 echo $from;
 echo $to;
 
-$amountTotransfer = 50;
+$amountTotransfer = 50.0;
 
-$transfer = function($x, $y) use ($amountTotransfer) {
+$from->map2($to, ($x, $y) ==> {
     $x -> withdrawal($amountTotransfer);
     $y -> deposit($amountTotransfer);
-};
-
-$from->map2($to, $transfer);
+});
 
 echo $from;
 echo $to;
@@ -52,9 +48,9 @@ class AccountService {
     public function findAccount($id) {
         switch($id) {
             case 1:
-                return Some(new Account($id, 300));
+                return Some(new Account($id, 300.0));
             case 2:
-                return Some(new Account($id, 500));
+                return Some(new Account($id, 500.0));
             default:
                 return None();
         }
