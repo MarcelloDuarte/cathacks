@@ -3,10 +3,11 @@
 namespace Md\CatHacks\Types;
 
 use Md\CatHacks\Categories\Functor\OptionMap;
+use Md\CatHacks\Categories\Apply\OptionMap2;
 
 final class Some<T> implements Option<T>
 {
-    use OptionMap;
+    use OptionMap, OptionMap2;
 
     public function __construct(private T $t) {}
 
