@@ -17,8 +17,8 @@ echo None()->map($x ==> $x + 1);
 echo Some(1)->map2(Some(2), ($x, $y) ==> $x + $y);
 echo Some(1)->apply(Some($x ==> $x + 3));
 
-$from = (new AccountService)->findAccount(1);
-$to = (new AccountService)->findAccount(2);
+$from = (new AccountService())->findAccount(1);
+$to = (new AccountService())->findAccount(2);
 
 echo $from;
 echo $to;
