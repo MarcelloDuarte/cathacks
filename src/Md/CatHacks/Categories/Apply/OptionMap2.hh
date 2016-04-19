@@ -7,7 +7,7 @@ use Md\CatHacks\Types\Option;
 
 trait OptionMap2
 {
-    public function apply<TA,TB>(Kind<T, (function(TA):TB)> $f): Kind <T, TB>
+    public function apply<TA,TB>(Kind<Option, (function(TA):TB)> $f): Kind <Option, TB>
     {
         if ($this instanceof Option) {
             return (new OptionApply())->apply($this, $f);
@@ -18,7 +18,7 @@ trait OptionMap2
         );
     }
 
-    public function map2<TA, TB, TZ>(Kind<T, TB> $fb, (function(TA,TB):TZ) $f): Kind<T, TZ>
+    public function map2<TA, TB, TZ>(Kind<Option, TB> $fb, (function(TA,TB):TZ) $f): Kind<Option, TZ>
     {
         if ($this instanceof Option) {
             return (new OptionApply())->map2($this, $fb, $f);
