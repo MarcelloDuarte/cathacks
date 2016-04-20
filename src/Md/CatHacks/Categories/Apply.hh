@@ -1,12 +1,12 @@
-<?hh
+<?hh // strict
 
 namespace Md\CatHacks\Categories;
 
-use Md\CatHacks\Util\Kind;
+use Md\CatHacks\Types\Option;
 
 interface Apply<T> extends Functor<T>
 {
-    public function apply<TA,TB>(Kind <T, TA> $fa, Kind<T, (function(TA):TB)> $f): Kind <T, TB>;
+    public function apply<TB>(Option<T> $fa, Option<(function(T):TB)> $f): Option<TB>;
 
-    public function map2<TA, TB, TZ>(Kind<T, TA> $fa, Kind<T, TB> $fb, (function(TA,TB):TZ) $f): Kind<T, TZ>;
+    public function map2<TB, TZ>(Option<T> $fa, Option<TB> $fb, (function(T,TB):TZ) $f): Option<TZ>;
 }

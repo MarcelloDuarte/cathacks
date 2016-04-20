@@ -5,9 +5,9 @@ namespace Md\CatHacks\Categories\Functor;
 use Md\CatHacks\Types\Option;
 use Md\CatHacks\Util\Kind;
 
-trait OptionMap
+trait OptionMap<T>
 {
-    public function map<TA,TB>((function(TA):TB) $f): Kind<Option, TB>
+    public function map<TB>((function(T):TB) $f): Option<TB>
     {
         if ($this instanceof Option) {
             return (new OptionFunctor())->map($this, $f);

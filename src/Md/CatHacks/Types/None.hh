@@ -1,23 +1,24 @@
-<?hh
+<?hh // strict
 
 namespace Md\CatHacks\Types;
 
 use Md\CatHacks\Categories\Functor\OptionMap;
 use Md\CatHacks\Categories\Apply\OptionMap2;
+use Md\CatHacks\Util\Kind;
 
 final class None<T> implements Option<T>
 {
-    private static $instance;
-    use OptionMap, OptionMap2;
+    private static ?None<T> $instance;
+    use OptionMap<T>, OptionMap2<T>;
 
     private function __construct() {}
-    private function __clone() {}
-    public static function instance()
+    private function __clone(): void {}
+    public static function instance(): None<T>
     {
         return self::$instance ?: new None();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return "None\n";
     }
@@ -30,5 +31,10 @@ final class None<T> implements Option<T>
     public function getOrElse(T $other): T
     {
         return $other;
+    }
+
+    public function isEmpty(): bool
+    {
+        return true;
     }
 }

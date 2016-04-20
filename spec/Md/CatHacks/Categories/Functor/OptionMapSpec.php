@@ -7,6 +7,7 @@ use Prophecy\Argument;
 
 use Md\CatHacks\Types\Option;
 use Md\CatHacks\Categories\Functor\{OptionMap,OptionFunctor};
+use Md\CatHacks\Categories\Apply\OptionMap2;
 
 class OptionMapSpec extends ObjectBehavior
 {
@@ -22,10 +23,11 @@ class OptionMapSpec extends ObjectBehavior
     private function optionWithOptionMapTrait($value)
     {
         return new class($value) implements Option {
-            use OptionMap;
+            use OptionMap, OptionMap2;
             public function __construct(private $t) {}
             public function get() { return $this->t; }
             public function getOrElse($other) { return $this->t; }
+            public function isEmpty() { return false; }
         };
     }
 }

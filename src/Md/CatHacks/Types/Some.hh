@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 
 namespace Md\CatHacks\Types;
 
@@ -7,7 +7,7 @@ use Md\CatHacks\Categories\Apply\OptionMap2;
 
 final class Some<T> implements Option<T>
 {
-    use OptionMap, OptionMap2;
+    use OptionMap<T>, OptionMap2<T>;
 
     public function __construct(private T $t) {}
 
@@ -21,8 +21,13 @@ final class Some<T> implements Option<T>
         return $this->t;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return "Some(" . (string) $this->t . ")\n";
+    }
+
+    public function isEmpty(): bool
+    {
+        return false;
     }
 }
