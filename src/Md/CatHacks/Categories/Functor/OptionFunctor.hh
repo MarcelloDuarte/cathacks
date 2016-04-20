@@ -10,6 +10,6 @@ class OptionFunctor<T> implements Functor<T>
 {
     public function map<TB>(Option<T> $fa, (function(T):TB) $f): Option<TB>
     {
-        return $fa == None() ? None() : Some($f($fa->get()));
+        return $fa->isEmpty() ? None() : Some($f($fa->get()));
     }
 }
