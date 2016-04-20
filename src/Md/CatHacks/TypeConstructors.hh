@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 
 use Md\CatHacks\Types\{Some,None,Option};
 use Md\CatHacks\Util\Kind;
