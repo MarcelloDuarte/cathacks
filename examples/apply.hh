@@ -2,45 +2,51 @@
 
 use Md\CatHacks\Types\Option;
 
-class Account {
-    public function __construct(private int $id, private float $amount) {}
-    public function deposit(float $money): void { $this->amount += $money; }
-    public function withdrawal(float $money): void { $this->amount -= $money; }
-    public function __toString(): string { return "Account: #" . $this->id . " £" . $this->amount; }
+type Amount = float;
+type Account = (int, Amount);
+type AccountPair = Option<(Option<Account>, Option<Account>)>;
+
+function withdrawal(Option<Account> $account, Amount $amount): Option<Account>
+{
+    return $account->map($x ==> tuple($x[0], $x[1] - $amount));
 }
 
-class AccountService {
-    public function findAccount(int $id): Option<Account> {
-        switch($id) {
-            case 1:
-                return Some(new Account($id, 300.0));
-            case 2:
-                return Some(new Account($id, 500.0));
-            default:
-                return None();
-        }
+function deposit(Option<Account> $account, Amount $amount): Option<Account>
+{
+    return $account->map($x ==> tuple($x[0], $x[1] + $amount));
+}
+
+function show(Option<Account> $a): void
+{
+    switch ($a) {
+        case None(): echo "None\n"; break;
+        default: $a->map($a ==> { echo sprintf("Account #%d £%.2f\n", $a[0], $a[1]); });
     }
+}
+
+function transfer(Option<Account> $account, Option<Account> $another, Amount $amount): AccountPair
+{
+    return $account->map2($another, ($x, $y) ==> {
+        $x = withdrawal(Option($x), $amount);
+        $y = deposit(Option($y), $amount);
+        return tuple($x, $y);
+    });
 }
 
 function apply_examples(): void
 {
-    // option apply with map2
-    echo Some(1)->map2(Some(2), ($x, $y) ==> $x + $y);
-    echo Some(1)->apply(Some($x ==> $x + 3));
+    $account = Some(tuple(1, 40.0));
+    show($account); // --> prints Account #1 £40.00
+    $account = withdrawal($account, 20.0);
+    show($account); // --> prints Account #1 £20.00
+    $account = deposit($account, 30.0);
+    show($account); // --> prints Account #1 £50.00
 
-    $from = (new AccountService())->findAccount(1);
-    $to = (new AccountService())->findAccount(2);
+    $another = Some(tuple(2, 0.0));
+    show($another); // --> prints Account #2 £0.00
 
-    echo $from;
-    echo $to;
+    list($account, $another) = transfer($account, $another, 10.0)->get();
 
-    $amountTotransfer = 50.0;
-
-    $from->map2($to, ($x, $y) ==> {
-        $x -> withdrawal($amountTotransfer);
-        $y -> deposit($amountTotransfer);
-    });
-
-    echo $from;
-    echo $to;
+    show($account); // --> prints Account #1 £40.00
+    show($another); // --> prints Account #2 £10.00
 }
