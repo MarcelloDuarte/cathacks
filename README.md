@@ -4,7 +4,7 @@ CatHacks
 A library of functional structures in HackLang
 
 ```hack
-<?hh
+<?hh // strict
 
 require_once "vendor/autoload.php";
 
