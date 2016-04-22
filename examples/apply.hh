@@ -16,21 +16,19 @@ function deposit(Option<Account> $account, Amount $amount): Option<Account>
     return $account->map($x ==> tuple($x[0], $x[1] + $amount));
 }
 
+function transfer(Option<Account> $account, Option<Account> $another, Amount $amount): AccountPair
+{
+    return $account->map2($another, ($x, $y) ==>
+        tuple(withdrawal(Option($x), $amount), deposit(Option($y), $amount))
+    );
+}
+
 function show(Option<Account> $a): void
 {
     switch ($a) {
         case None(): echo "None\n"; break;
         default: $a->map($a ==> { echo sprintf("Account #%d £%.2f\n", $a[0], $a[1]); });
     }
-}
-
-function transfer(Option<Account> $account, Option<Account> $another, Amount $amount): AccountPair
-{
-    return $account->map2($another, ($x, $y) ==> {
-        $x = withdrawal(Option($x), $amount);
-        $y = deposit(Option($y), $amount);
-        return tuple($x, $y);
-    });
 }
 
 function apply_examples(): void
