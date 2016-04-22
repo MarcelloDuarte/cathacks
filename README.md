@@ -4,6 +4,8 @@ CatHacks
 A library of functional structures in HackLang
 
 ```hack
+<?hh
+
 require_once "vendor/autoload.php";
 
 echo Some(1);
