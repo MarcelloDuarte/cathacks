@@ -4,12 +4,12 @@ namespace Md\CatHacks\Types;
 
 use Md\CatHacks\Categories\Functor\OptionMap;
 use Md\CatHacks\Categories\Apply\OptionMap2;
-use Md\CatHacks\Util\Kind;
+use Md\CatHacks\Types\Option\KindOf;
 
 final class None<T> implements Option<T>
 {
     private static ?None<T> $instance;
-    use OptionMap<T>, OptionMap2<T>;
+    use KindOf, OptionMap<T>, OptionMap2<T>;
 
     private function __construct() {}
     private function __clone(): void {}
