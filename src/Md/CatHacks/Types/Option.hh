@@ -2,10 +2,10 @@
 
 namespace Md\CatHacks\Types;
 
-use Md\CatHacks\Util\Functor\OptionFunctor;
+use Md\CatHacks\Util\Applicative\OptionApplicative;
 
 abstract class Option<T> implements Kind<T>
 {
-    use OptionFunctor;
+    use OptionApplicative;
     public function getKind(): string { return "A"; }
 }
