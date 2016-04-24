@@ -5,11 +5,16 @@ namespace spec\Md\CatHacks\Categories\Functor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+use Md\CatHacks\Types\Option;
+use Md\CatHacks\Categories\Functor\OptionFunctor;
+use Md\CatHacks\Categories\Functor;
+
 class OptionFunctorSpec extends ObjectBehavior
 {
+
     function it_is_a_functor()
     {
-        $this->shouldHaveType('Md\CatHacks\Categories\Functor');
+        $this->shouldHaveType(Functor::class);
     }
 
     function it_maps_None_to_None()

@@ -1,15 +1,24 @@
-<?hh // strict
+<?hh
 
 namespace Md\CatHacks\Categories\Functor;
 
+use Md\CatHacks\Types\{Kind,Option};
 use Md\CatHacks\Categories\Functor;
-use Md\CatHacks\Types\{None,Some,Option};
-use Md\CatHacks\Util\Kind;
 
-class OptionFunctor<T> implements Functor<T>
+class OptionFunctor implements Functor
 {
-    public function map<TB>(Option<T> $fa, (function(T):TB) $f): Option<TB>
+    public function map<TA,TB>(Kind<TA> $fa, (function(TA):TB) $f): Kind<TB>
     {
-        return $fa->isEmpty() ? None() : Some($f($fa->get()));
+        switch(true) {
+            case $fa == None(): return None(); break;
+            case $fa->getKind() !== "A": throw BadMethodCallException();
+            case !$fa instanceof Option: throw BadMethodCallException();
+            default: return Some($f($fa->get())); break;
+        }
+    }
+
+    public static function instance(): OptionFunctor
+    {
+        return new OptionFunctor();
     }
 }

@@ -1,10 +1,11 @@
-<?hh // strict
+<?hh
 
 namespace Md\CatHacks\Types;
 
-interface Option<T> extends Kind<T>, OptionFunctor<T>, OptionApply<T>
+use Md\CatHacks\Util\Functor\OptionFunctor;
+
+abstract class Option<T> implements Kind<T>
 {
-    public function get(): T;
-    public function getOrElse(T $other): T;
-    public function isEmpty(): bool;
+    use OptionFunctor;
+    public function getKind(): string { return "A"; }
 }

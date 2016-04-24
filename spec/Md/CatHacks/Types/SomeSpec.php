@@ -22,13 +22,8 @@ class SomeSpec extends ObjectBehavior
         $this->get()->shouldReturn(42);
     }
 
-    function it_returns_its_own_value_on_getOrElse()
-    {
-        $this->getOrElse(3)->shouldReturn(42);
-    }
-
     function it_can_be_printed_nicely()
     {
-        $this->__toString()->shouldReturn("Some(42)\n");
+        $this->__toString()->shouldReturn("Some(42)");
     }
 }

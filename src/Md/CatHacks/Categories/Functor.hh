@@ -1,10 +1,10 @@
-<?hh // strict
+<?hh
 
 namespace Md\CatHacks\Categories;
 
-use Md\CatHacks\Types\Option;
+use Md\CatHacks\Types\Kind;
 
-interface Functor<T>
+interface Functor
 {
-    public function map<TB>(Option<T> $fa, (function(T):TB) $f): Option<TB>;
+    public function map<TA,TB>(Kind<TA> $fa, (function(TA):TB) $f): Kind<TB>;
 }

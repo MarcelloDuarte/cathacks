@@ -1,9 +1,12 @@
-<?hh // strict
+<?hh
 
 namespace Md\CatHacks\Types;
 
-interface Kind<T>
+use Stringish,HH\ImmVector;
+
+interface Kind<+T> extends Stringish
 {
     public function getKind(): string;
-    public function isKindOf(string $kind): bool;
+    public function get(): T;
+    public function values(): ImmVector<T>;
 }

@@ -22,13 +22,8 @@ class NoneSpec extends ObjectBehavior
         $this->shouldThrow("BadMethodCallException")->duringGet();
     }
 
-    function it_always_return_the_other_on_getOrElse()
-    {
-        $this->getOrElse(42)->shouldReturn(42);
-    }
-
     function it_should_be_printed_as_None()
     {
-        $this->__toString()->shouldReturn("None\n");
+        $this->__toString()->shouldReturn("None");
     }
 }

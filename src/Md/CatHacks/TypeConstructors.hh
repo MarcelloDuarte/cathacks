@@ -1,11 +1,10 @@
-<?hh // strict
+<?hh
 
-use Md\CatHacks\Types\{Some,None,Option};
-use Md\CatHacks\Util\Kind;
+use Md\CatHacks\Types\{Option,ImmList,Some,None};
 
-function Some<T>(T $t): Option<T>
+function Some<T>(T $value): Option<T>
 {
-    return $t === null ? None::instance() : new Some($t);
+    return new Some($value);
 }
 
 function None<T>(): Option<T>
@@ -13,7 +12,12 @@ function None<T>(): Option<T>
     return None::instance();
 }
 
-function Option<T>(T $t): Option<T>
+function Option<T>(T $value): Option<T>
 {
-    return Some($t);
+    return $value === null ? None() : Some($value);
+}
+
+function ImmList(...$values): ImmList
+{
+    return new ImmList(new ImmVector($values));
 }
