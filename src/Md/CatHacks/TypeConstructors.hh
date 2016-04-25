@@ -17,7 +17,7 @@ function Option<T>(T $value): Option<T>
     return $value === null ? None() : Some($value);
 }
 
-function ImmList(...$values): ImmList
+function ImmList<T>(...$values): ImmList<T>
 {
     return new ImmList(new ImmVector($values));
 }
