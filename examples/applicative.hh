@@ -14,5 +14,5 @@ function applicative_examples(): void
     putStrLn(ImmList(1,2,3)->apply(Some($x ==> $x + 1))); // --> prints List(2,3,4)
 
     // list map2
-    putStrLn(ImmList(1,2,3)->map2(ImmList(1,2,3), ($x, $y) ==> $x + $y)); // --> prints Some(3)
+    putStrLn(ImmList(1,2,3)->map2(ImmList(4,5,6), ($x, $y) ==> $x + $y)); // --> prints List(5,6,7,6,7,8,7,8,9)
 }

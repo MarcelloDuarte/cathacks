@@ -16,7 +16,11 @@ class ListApplicative extends ListFunctor implements Applicative
             case $fa->getKind() !== "F[+A]": throw BadMethodCallException();
             case !$fa instanceof ImmList: throw BadMethodCallException();
             case $f instanceof ImmList:
-                return ImmList(...array_map($f->values()->at(0), $fa->values())); break;
+                $values = [];
+                foreach ($f->values() as $callback) {
+                    $values = array_merge($values, array_map($callback, $fa->values()));
+                }
+                return ImmList(...$values); break;
             default:
                 return ImmList(...array_map($f->get(), $fa->values())); break;
         }
