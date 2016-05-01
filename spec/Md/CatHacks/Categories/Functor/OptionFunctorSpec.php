@@ -5,8 +5,6 @@ namespace spec\Md\CatHacks\Categories\Functor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-use Md\CatHacks\Types\Option;
-use Md\CatHacks\Categories\Functor\OptionFunctor;
 use Md\CatHacks\Categories\Functor;
 
 class OptionFunctorSpec extends ObjectBehavior
