@@ -4,6 +4,7 @@ namespace Md\CatHacks\Categories\Functor;
 
 use Md\CatHacks\Categories\Functor;
 use Md\CatHacks\Types\{Kind,ImmList};
+use BadMethodCallException;
 
 class ListFunctor implements Functor
 {
@@ -11,8 +12,8 @@ class ListFunctor implements Functor
     {
         switch(true) {
             case $fa == ImmList(): return ImmList(); break;
-            case $fa->getKind() !== "F[+A]": throw BadMethodCallException();
-            case !$fa instanceof ImmList: throw BadMethodCallException();
+            case $fa->getKind() !== "F[+A]": throw new BadMethodCallException();
+            case !$fa instanceof ImmList: throw new BadMethodCallException();
             default:
                 return ImmList(...array_map($f, $fa->values())); break;
         }
