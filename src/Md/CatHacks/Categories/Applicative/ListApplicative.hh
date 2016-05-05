@@ -6,6 +6,8 @@ use Md\CatHacks\Categories\Applicative;
 use Md\CatHacks\Categories\Functor\ListFunctor;
 use Md\CatHacks\Types\{Kind,ImmList};
 
+use BadMethodCallException;
+
 class ListApplicative extends ListFunctor implements Applicative
 {
     public function apply<TA,TB>(Kind<TA> $fa, Kind<(function(TA):TB)> $f): Kind<TB>
@@ -13,8 +15,8 @@ class ListApplicative extends ListFunctor implements Applicative
         switch(true) {
             case $f == None() : return None();
             case $fa == ImmList(): return ImmList(); break;
-            case $fa->getKind() !== "F[+A]": throw BadMethodCallException();
-            case !$fa instanceof ImmList: throw BadMethodCallException();
+            case $fa->getKind() !== "F[+A]": throw new BadMethodCallException();
+            case !$fa instanceof ImmList: throw new BadMethodCallException();
             case $f instanceof ImmList:
                 $values = [];
                 foreach ($f->values() as $callback) {
