@@ -10,11 +10,15 @@ use BadMethodCallException;
 
 class ListApplicative extends ListFunctor implements Applicative
 {
+    public function pure<TA>(TA $a): Kind<TA>
+    {
+        return ImmList($a);
+    }
+
     public function apply<TA,TB>(Kind<TA> $fa, Kind<(function(TA):TB)> $f): Kind<TB>
     {
         switch(true) {
             case $f == None() : return None();
-            case $fa == ImmList(): return ImmList(); break;
             case $fa->getKind() !== "F[+A]": throw new BadMethodCallException();
             case !$fa instanceof ImmList: throw new BadMethodCallException();
             case $f instanceof ImmList:

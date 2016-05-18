@@ -11,7 +11,6 @@ class ListFunctor implements Functor
     public function map<TA,TB>(Kind<TA> $fa, (function(TA):TB) $f): Kind<TB>
     {
         switch(true) {
-            case $fa == ImmList(): return ImmList(); break;
             case $fa->getKind() !== "F[+A]": throw new BadMethodCallException();
             case !$fa instanceof ImmList: throw new BadMethodCallException();
             default:

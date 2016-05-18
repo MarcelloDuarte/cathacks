@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 
 namespace Md\CatHacks\Categories\Applicative;
 
@@ -10,6 +10,11 @@ use BadMethodCallException;
 
 class OptionApplicative extends OptionFunctor implements Applicative
 {
+    public function pure<TA>(TA $a): Kind<TA>
+    {
+        return Option($a);
+    }
+
     public function apply<TA,TB>(Kind<TA> $fa, Kind<(function(TA):TB)> $f): Kind<TB>
     {
         switch(true) {
@@ -24,6 +29,12 @@ class OptionApplicative extends OptionFunctor implements Applicative
     public function map2<TA,TB,TZ>(Kind<TA> $fa, Kind<TB> $fb, (function(TA,TB):TZ) $f): Kind<TZ>
     {
         return $this->apply($fa, $this->map($fb, $b ==> $a ==> $f($a, $b)));
+    }
+
+    <<__Override>>
+    public function map<TA,TB>(Kind<TA> $fa, (function(TA):TB) $f): Kind<TB>
+    {
+        return $this->apply($fa, $this->pure($f));
     }
 
     public static function instance(): OptionApplicative
