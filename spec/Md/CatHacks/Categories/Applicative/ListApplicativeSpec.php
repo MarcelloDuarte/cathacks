@@ -9,6 +9,11 @@ use Md\CatHacks\Categories\Applicative;
 use Md\CatHacks\Categories\Applicative\ListApplicative;
 use BadMethodCallException;
 
+use Eris\TestTrait;
+use Eris\Generator\SequenceGenerator as SeqGen;
+use Eris\Generator\IntegerGenerator as IntGen;
+use Eris\Generator\ElementsGenerator as ElementsGen;
+
 /**
  * Had to declared file `decl` and use the `public` for methods
  * as hh_client needed this to validate the spec.
@@ -19,6 +24,8 @@ use BadMethodCallException;
  */
  class ListApplicativeSpec extends ObjectBehavior
 {
+    use TestTrait;
+
     public
     function it_is_an_applicative()
     {
@@ -41,33 +48,56 @@ use BadMethodCallException;
     public
     function it_applies_the_result_of_the_function_to_a_List()
     {
-        $this->apply(ImmList(1,2,3), Option($x ==> $x + 1))->shouldBeLike(ImmList(2,3,4));
+        $this->forAll(
+            new SeqGen(new IntGen())
+        )->then($list ==> {
+            $this->apply(ImmList(...$list), Option($x ==> $x + 1))
+                ->shouldBeLike(ImmList(...array_map($x ==> $x + 1, $list)));
+        });
     }
 
     public
     function it_does_not_apply_to_a_different_kind()
     {
-        $this->shouldThrow(BadMethodCallException::class)->duringApply(Option(1), Option($x ==> $x + 1));
+        $this->forAll(
+            ElementsGen::fromArray(["Option"]),
+            new IntGen
+        )->then(($kind, $value) ==> {
+            $this->shouldThrow(BadMethodCallException::class)->duringApply($kind($value), Option($x ==> $x + 1));
+        });
     }
 
     public
     function it_implements_map2()
     {
-        $this->map2(ImmList(1), ImmList(42), ($x, $y) ==> $x + $y)
-             ->shouldBeLike(ImmList(43));
+        $this->forAll(
+            new IntGen(), new IntGen()
+        )->then(($x1, $x2) ==>
+            $this->map2(ImmList($x1), ImmList($x2), ($x, $y) ==> $x + $y)
+                 ->shouldBeLike(ImmList($x1 + $x2))
+        );
+
     }
 
     public
     function it_returns_Empty_when_Empty_is_mapped_with_map2()
     {
-        $this->map2(ImmList(), ImmList(), Option(($x, $y) ==> $x + $y))->shouldBeLike(ImmList());
-        $this->map2(ImmList(42), ImmList(), Option(($x, $y) ==> $x + $y))->shouldBeLike(ImmList());
-        $this->map2(ImmList(), ImmList(42), Option(($x, $y) ==> $x + $y))->shouldBeLike(ImmList());
+        $this->forAll(
+            new IntGen()
+        )->then($int ==> {
+            $this->map2(ImmList(), ImmList(), Option(($x, $y) ==> $x + $y))->shouldBeLike(ImmList());
+            $this->map2(ImmList($int), ImmList(), Option(($x, $y) ==> $x + $y))->shouldBeLike(ImmList());
+            $this->map2(ImmList(), ImmList($int), Option(($x, $y) ==> $x + $y))->shouldBeLike(ImmList());
+        });
     }
 
     public
     function it_implements_pure()
     {
-        $this->pure(42)->shouldBeLike(ImmList(42));
+        $this->forAll(
+            new IntGen()
+        )->then($int ==>
+            $this->pure($int)->shouldBeLike(ImmList($int))
+        );
     }
 }

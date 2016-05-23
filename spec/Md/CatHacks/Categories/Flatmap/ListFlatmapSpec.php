@@ -7,9 +7,17 @@ use Prophecy\Argument;
 
 use Md\CatHacks\Categories\Flatmap;
 use Md\CatHacks\Categories\Functor;
+use Md\CatHacks\Types\None;
+
+use Eris\TestTrait;
+use Eris\Generator\SequenceGenerator as SeqGen;
+use Eris\Generator\IntegerGenerator as IntGen;
+use Eris\Generator\ElementsGenerator as ElementsGen;
 
 class ListFlatmapSpec extends ObjectBehavior
 {
+    use TestTrait;
+
     function it_is_initializable()
     {
         $this->shouldHaveType(Flatmap::class);
@@ -22,9 +30,24 @@ class ListFlatmapSpec extends ObjectBehavior
 
     function it_implements_flatmap_for_list()
     {
-        $this->flatMap(ImmList(42), $x ==> Some($x + 1))->shouldBeLike(ImmList(43));
-        $this->flatMap(ImmList(1,2,3), $x ==> Some($x + 1))->shouldBeLike(ImmList(2,3,4));
-        $this->flatMap(ImmList(1,None(),3), $x ==> Some($x + 1))->shouldBeLike(ImmList(2,None(),4));
+        $this->forAll(
+            new SeqGen(new IntGen())
+        )->then($list ==>
+            $this->flatMap(ImmList(...$list), $x ==> Some($x + 1))
+                ->shouldBeLike(ImmList(...array_map($x ==> $x + 1, $list)))
+        );
+    }
+
+    function it_keeps_none_when_none_is_passed()
+    {
+        $this->forAll(
+            new SeqGen(ElementsGen::fromArray([None(), 1, 2, 3]))
+        )->then($list ==>
+            $this->flatMap(ImmList(...$list), $x ==> Some($x + 1))
+                ->shouldBeLike(ImmList(
+                ...array_map($x ==> ($x instanceof None) ? None() : ($x + 1), $list)
+            ))
+        );
     }
 
     function it_implements_flatmap_for_empty()
