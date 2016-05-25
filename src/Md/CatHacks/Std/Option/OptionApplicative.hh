@@ -1,9 +1,9 @@
 <?hh // strict
 
-namespace Md\CatHacks\Categories\Applicative;
+namespace Md\CatHacks\Std\Option;
 
 use Md\CatHacks\Categories\Applicative;
-use Md\CatHacks\Categories\Functor\OptionFunctor;
+use Md\CatHacks\Std\Option\OptionFunctor;
 use Md\CatHacks\Types\{Kind,Option};
 
 use BadMethodCallException;

@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 
 namespace Md\CatHacks\Types;
 
@@ -13,7 +13,7 @@ final class ImmList<T> implements Kind<T>
     public function getKind(): string { return "F[+A]"; }
     public function values(): ImmVector<T> { return $this->values; }
     public function get(): T { throw new BadMethodCallException(); }
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf("List(%s)", implode(",", $this->values->map($x ==> (string) $x)));
     }

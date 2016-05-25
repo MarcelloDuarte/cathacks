@@ -1,9 +1,9 @@
 <?hh // strict
 
-namespace Md\CatHacks\Categories\Flatmap;
+namespace Md\CatHacks\Std\Option;
 
 use Md\CatHacks\Categories\Flatmap;
-use Md\CatHacks\Categories\Functor\OptionFunctor;
+use Md\CatHacks\Std\Option\OptionFunctor;
 use Md\CatHacks\Types\Kind;
 
 class OptionFlatmap extends OptionFunctor implements Flatmap

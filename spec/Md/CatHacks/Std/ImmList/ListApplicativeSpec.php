@@ -1,12 +1,12 @@
 <?hh // decl
 
-namespace spec\Md\CatHacks\Categories\Applicative;
+namespace spec\Md\CatHacks\Std\ImmList;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 use Md\CatHacks\Categories\Applicative;
-use Md\CatHacks\Categories\Applicative\ListApplicative;
+use Md\CatHacks\Std\ImmList\ListApplicative;
 use BadMethodCallException;
 
 use Eris\TestTrait;

@@ -1,6 +1,6 @@
-<?hh
+<?hh // strict
 
-namespace Md\CatHacks\Categories\Functor;
+namespace Md\CatHacks\Std\Option;
 
 use Md\CatHacks\Types\{Kind,Option};
 use Md\CatHacks\Categories\Functor;

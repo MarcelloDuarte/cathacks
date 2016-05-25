@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 use Md\CatHacks\Types\Option;
-use Md\CatHacks\Categories\Functor\OptionFunctor;
+use Md\CatHacks\Std\Option\OptionFunctor;
 use Md\CatHacks\Util\Functor\OptionFunctor as OptionFunctorTrait;
 
 class OptionFunctorSpec extends ObjectBehavior

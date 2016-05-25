@@ -1,6 +1,6 @@
-<?hh
+<?hh // strict
 
-namespace Md\CatHacks\Categories\Functor;
+namespace Md\CatHacks\Std\ImmList;
 
 use Md\CatHacks\Categories\Functor;
 use Md\CatHacks\Types\{Kind,ImmList};

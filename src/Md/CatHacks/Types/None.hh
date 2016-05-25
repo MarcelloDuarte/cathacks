@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 
 namespace Md\CatHacks\Types;
 
@@ -8,7 +8,7 @@ final class None<T> extends Option<T>
 {
     private static ?None<T> $instance;
     private function __construct() {}
-    private function __clone() {}
+    private function __clone(): void {}
     public static function instance(): None<T> {
         return self::$instance ?: new None();
     }

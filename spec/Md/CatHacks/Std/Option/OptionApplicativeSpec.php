@@ -1,12 +1,12 @@
 <?hh // decl
 
-namespace spec\Md\CatHacks\Categories\Applicative;
+namespace spec\Md\CatHacks\Std\Option;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 use Md\CatHacks\Categories\Applicative;
-use Md\CatHacks\Categories\Applicative\OptionApplicative;
+use Md\CatHacks\Std\Option\OptionApplicative;
 use BadMethodCallException;
 
 use Eris\TestTrait;

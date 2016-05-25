@@ -1,9 +1,9 @@
-<?hh
+<?hh // strict
 
-namespace Md\CatHacks\Categories\Applicative;
+namespace Md\CatHacks\Std\ImmList;
 
 use Md\CatHacks\Categories\Applicative;
-use Md\CatHacks\Categories\Functor\ListFunctor;
+use Md\CatHacks\Std\ImmList\ListFunctor;
 use Md\CatHacks\Types\{Kind,ImmList};
 
 use BadMethodCallException;

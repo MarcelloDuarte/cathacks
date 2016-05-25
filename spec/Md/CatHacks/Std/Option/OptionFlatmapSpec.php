@@ -1,6 +1,6 @@
 <?hh // decl
 
-namespace spec\Md\CatHacks\Categories\Flatmap;
+namespace spec\Md\CatHacks\Std\Option;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

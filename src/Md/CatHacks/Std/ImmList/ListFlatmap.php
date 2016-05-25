@@ -1,9 +1,9 @@
 <?hh // strict
 
-namespace Md\CatHacks\Categories\Flatmap;
+namespace Md\CatHacks\Std\ImmList;
 
 use Md\CatHacks\Categories\Flatmap;
-use Md\CatHacks\Categories\Functor\ListFunctor;
+use Md\CatHacks\Std\ImmList\ListFunctor;
 use Md\CatHacks\Types\{Kind,None};
 
 class ListFlatmap extends ListFunctor implements Flatmap
