@@ -16,4 +16,9 @@ trait OptionFunctor
         }
         return Functor::instance()->map($this, $f);
     }
+
+    public function imap<TA,TB>((function(TA):TB) $f, (function(TB):TA) $g): Kind<TB>
+    {
+        return Functor::instance()->map($this, $f);
+    }
 }

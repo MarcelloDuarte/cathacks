@@ -6,6 +6,10 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 use Md\CatHacks\Categories\Functor;
+use Md\CatHacks\Categories\Functor\Invariant;
+use Md\CatHacks\Laws\InvariantLaws;
+use Md\CatHacks\Laws\FunctorLaws;
+
 use BadMethodCallException;
 
 use Eris\TestTrait;
@@ -15,11 +19,39 @@ use Eris\Generator\ElementsGenerator as ElementsGen;
 class OptionFunctorSpec extends ObjectBehavior
 {
     use TestTrait;
+    use InvariantLaws;
+    use FunctorLaws;
 
     public
     function it_is_a_functor()
     {
         $this->shouldHaveType(Functor::class);
+    }
+
+    public
+    function it_is_a_invariant()
+    {
+        $this->shouldHaveType(Invariant::class);
+    }
+
+    public
+    function it_obeys_the_identity_law_of_covariance()
+    {
+        $this->forAll(
+            new IntGen
+        )->then($fa ==>
+            expect($this->covariantIdentity(Option($fa)))->toBe(true)
+        );
+    }
+
+    public
+    function it_obeys_the_identity_law_of_invariance()
+    {
+        $this->forAll(
+            new IntGen
+        )->then($fa ==>
+            expect($this->invariantIdentity(Option($fa)))->toBe(true)
+        );
     }
 
     public
