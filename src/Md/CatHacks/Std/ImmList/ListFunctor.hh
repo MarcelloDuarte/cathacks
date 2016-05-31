@@ -18,6 +18,11 @@ class ListFunctor implements Functor
         }
     }
 
+    public function imap<TA,TB>(Kind<TA> $fa, (function(TA):TB) $f, (function(TB):TA) $g): Kind<TB>
+    {
+        return $this->map($fa, $f);
+    }
+
     public static function instance(): ListFunctor
     {
         return new ListFunctor();
