@@ -9,7 +9,9 @@ use Md\CatHacks\Categories\Functor;
 use Md\CatHacks\Categories\Functor\Invariant;
 use Md\CatHacks\Laws\InvariantLaws;
 use Md\CatHacks\Laws\FunctorLaws;
+
 use Md\PropertyTesting\Generator\ImmListGenerator as ListGen;
+use Md\PropertyTesting\Generator\Function1Generator as FuncGen;
 
 use BadMethodCallException;
 
@@ -58,6 +60,32 @@ class ListFunctorSpec extends ObjectBehavior
     }
 
     public
+    function it_obeys_the_composition_law_of_invariance()
+    {
+        $this->forAll(
+            $this->genRandomList(),
+            $this->genFunctionIntToString(),
+            $this->genFunctionStringToInt(),
+            $this->genFunctionStringToBool(),
+            $this->genFunctionBoolToString()
+        )->then(($fa, $f1, $f2, $g1, $g2) ==>
+            expect($this->invariantComposition($fa, $f1, $f2, $g1, $g2))->toBe(true)
+        );
+    }
+
+    public
+    function it_obeys_the_composition_law_of_covariance()
+    {
+        $this->forAll(
+            $this->genRandomList(),
+            $this->genFunctionIntToString(),
+            $this->genFunctionStringToInt()
+        )->then(($fa, $f, $g) ==>
+            expect($this->covariantComposition($fa, $f, $g))->toBe(true)
+        );
+    }
+
+    public
     function it_maps_empty_list_to_empty_list()
     {
         $this->map(ImmList(), $x ==> 42)->shouldBeLike(ImmList());
@@ -88,5 +116,25 @@ class ListFunctorSpec extends ObjectBehavior
     private function genRandomList(): ListGen
     {
         return new ListGen(new OneOfGen([new IntGen, new StringGen]));
+    }
+
+    private function genFunctionIntToString(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((int $x):string ==> (string)$x)]);
+    }
+
+    private function genFunctionStringToInt(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x))]);
+    }
+
+    private function genFunctionStringToBool(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x) % 2 === 0)]);
+    }
+
+    private function genFunctionBoolToString(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((bool $x) ==> strlen($x) % 2 === 0)]);
     }
 }
