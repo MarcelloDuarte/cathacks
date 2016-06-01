@@ -15,6 +15,7 @@ use BadMethodCallException;
 use Eris\TestTrait;
 use Eris\Generator\IntegerGenerator as IntGen;
 use Eris\Generator\ElementsGenerator as ElementsGen;
+use Eris\Generator\MapGenerator as MapGen;
 
 class OptionFunctorSpec extends ObjectBehavior
 {
@@ -38,7 +39,7 @@ class OptionFunctorSpec extends ObjectBehavior
     function it_obeys_the_identity_law_of_covariance()
     {
         $this->forAll(
-            new IntGen
+            new IntGen()
         )->then($fa ==>
             expect($this->covariantIdentity(Option($fa)))->toBe(true)
         );
@@ -48,12 +49,37 @@ class OptionFunctorSpec extends ObjectBehavior
     function it_obeys_the_identity_law_of_invariance()
     {
         $this->forAll(
-            new IntGen
+            new IntGen()
         )->then($fa ==>
             expect($this->invariantIdentity(Option($fa)))->toBe(true)
         );
     }
 
+    public
+    function it_obeys_the_composition_law_of_invariance()
+    {
+        $this->forAll(
+            $this->genOption(),
+            $this->genFunctionIntToString(),
+            $this->genFunctionStringToInt(),
+            $this->genFunctionStringToBool(),
+            $this->genFunctionBoolToString()
+        )->then(($fa, $f1, $f2, $g1, $g2) ==>
+            expect($this->invariantComposition($fa, $f1, $f2, $g1, $g2))->toBe(true)
+        );
+    }
+
+    public
+    function it_obeys_the_composition_law_of_covariance()
+    {
+        $this->forAll(
+            $this->genOption(),
+            $this->genFunctionIntToString(),
+            $this->genFunctionStringToInt()
+        )->then(($fa, $f, $g) ==>
+            expect($this->covariantComposition($fa, $f, $g))->toBe(true)
+        );
+    }
     public
     function it_maps_None_to_None()
     {
@@ -64,7 +90,7 @@ class OptionFunctorSpec extends ObjectBehavior
     function it_maps_the_result_of_the_function_to_Some()
     {
         $this->forAll(
-            new IntGen
+            new IntGen()
         )->then($number ==>
             $this->map(Some($number), $x ==> $x + 1)->shouldBeLike(Some($number + 1))
         );
@@ -75,9 +101,34 @@ class OptionFunctorSpec extends ObjectBehavior
     {
         $this->forAll(
             ElementsGen::fromArray(["ImmList"]),
-            new IntGen
+            new IntGen()
         )->then(($kind, $value) ==>
             $this->shouldThrow(BadMethodCallException::class)->duringMap($kind($value), $x ==> $x + 1)
         );
+    }
+
+    private function genFunctionIntToString(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((int $x):string ==> (string)$x)]);
+    }
+
+    private function genFunctionStringToInt(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x))]);
+    }
+
+    private function genFunctionStringToBool(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x) % 2 === 0)]);
+    }
+
+    private function genFunctionBoolToString(): ElementsGen
+    {
+        return ElementsGen::fromArray([Function1((bool $x) ==> strlen($x) % 2 === 0)]);
+    }
+
+    private function genOption()
+    {
+        return new MapGen($x ==> Option($x), new IntGen());
     }
 }
