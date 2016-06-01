@@ -13,15 +13,10 @@ class ImmListGenerator implements Generator
 {
     public function __construct(private Generator $valueGenerator) {}
 
-    public function __invoke($size)
+    public function __invoke($size, $rand)
     {
-        $sequenceLength = rand(0, $size);
-        return GeneratedValue::fromJustValue(ImmList(...$this->vector($sequenceLength)->__invoke($size)->unbox()));
-    }
-
-    private function vector($size)
-    {
-        return new VectorGenerator($size, $this->valueGenerator);
+        $sequenceLength = $rand(0, $size);
+        return GeneratedValue::fromJustValue(ImmList(...$this->vector($sequenceLength)->__invoke($size, $rand)->unbox()));
     }
 
     public function shrink(GeneratedValue $sequence)
@@ -33,7 +28,8 @@ class ImmListGenerator implements Generator
             );
         }
 
-        $willShrinkInSize = (new BooleanGenerator())->__invoke(1);
+        // TODO: make deterministic, try first one then the other?
+        $willShrinkInSize = (new BooleanGenerator())->__invoke(1, 'rand');
         if ($willShrinkInSize) {
             return $this->shrinkInSize($sequence);
         }
@@ -59,7 +55,7 @@ class ImmListGenerator implements Generator
         $input = array_values($input);
         return GeneratedValue::fromValueAndInput(
             array_map(
-                function($element) { return $element->unbox(); },
+                function ($element) { return $element->unbox(); },
                 $input
             ),
             $input,
@@ -70,5 +66,10 @@ class ImmListGenerator implements Generator
     private function shrinkTheElements($sequence)
     {
         return $this->vector(count($sequence))->shrink($sequence);
+    }
+
+    private function vector($size)
+    {
+        return new VectorGenerator($size, $this->valueGenerator);
     }
 }
