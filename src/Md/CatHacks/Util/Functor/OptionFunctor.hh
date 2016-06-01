@@ -19,6 +19,9 @@ trait OptionFunctor
 
     public function imap<TA,TB>((function(TA):TB) $f, (function(TB):TA) $g): Kind<TB>
     {
+        if (!$this instanceof Option) {
+            throw new BadMethodCallException();
+        }
         return Functor::instance()->map($this, $f);
     }
 }

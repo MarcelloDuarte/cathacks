@@ -19,6 +19,9 @@ trait ListFunctor
 
     public function imap<TA,TB>((function(TA):TB) $f, (function(TB):TA) $g): Kind<TB>
     {
+        if (!$this instanceof ImmList) {
+            throw new BadMethodCallException();
+        }
         return Functor::instance()->map($this, $f);
     }
 }

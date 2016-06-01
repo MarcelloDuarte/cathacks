@@ -2,7 +2,9 @@
 
 namespace Md\CatHacks\Categories\Functor;
 
+use Md\CatHacks\Types\Kind;
+
 interface Invariant
 {
-    // public function imap(Kind<TA> $fa,(function(TA):TB) $f,(function(TB):TA) $g): Kind<TB>;
+    public function imap<TA,TB>(Kind<TA> $fa,(function(TA):TB) $f,(function(TB):TA) $g): Kind<TB>;
 }

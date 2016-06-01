@@ -1,4 +1,4 @@
-<?hh
+<?hh // strict
 
 use Md\CatHacks\Types\{Option,ImmList,Some,None,Function1};
 
@@ -17,7 +17,7 @@ function Option<T>(T $value): Option<T>
     return $value === null ? None() : Some($value);
 }
 
-function ImmList<T>(...$values): ImmList<T>
+function ImmList<T>(T... $values): ImmList<T>
 {
     return new ImmList(new ImmVector($values));
 }
