@@ -11,6 +11,14 @@ use BadMethodCallException;
 trait ListApplicative
 {
     use ListFunctor;
+    public function pure<TA>(TA $a): Kind<TA>
+    {
+        if (!$this instanceof ImmList) {
+            throw new BadMethodCallException();
+        }
+        return Applicative::instance()->pure($a);
+    }
+
     public function apply<TA,TB>(Kind<(function(TA):TB)> $f): Kind<TB>
     {
         if (!$this instanceof ImmList) {

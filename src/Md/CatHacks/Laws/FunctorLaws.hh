@@ -19,6 +19,6 @@ trait FunctorLaws
 
      public function covariantComposition<TA,TB,TC>(Covariant $fa, Function1<TA,TB> $f, Function1<TB,TC> $g): bool
      {
-         return $fa->map($f->get())->map($g->get()) == $fa->map($f->andThen($g));
+         return $fa->map($f->get())->map($g->get()) == $fa->map($f->andThen($g)->get());
      }
 }

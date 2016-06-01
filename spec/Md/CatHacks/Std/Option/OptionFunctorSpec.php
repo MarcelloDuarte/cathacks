@@ -15,13 +15,15 @@ use BadMethodCallException;
 use Eris\TestTrait;
 use Eris\Generator\IntegerGenerator as IntGen;
 use Eris\Generator\ElementsGenerator as ElementsGen;
-use Eris\Generator\MapGenerator as MapGen;
+
+use Md\PropertyTesting\Generator\RandomContainersGenerator;
 
 class OptionFunctorSpec extends ObjectBehavior
 {
     use TestTrait;
     use InvariantLaws;
     use FunctorLaws;
+    use RandomContainersGenerator;
 
     public
     function it_is_a_functor()
@@ -105,30 +107,5 @@ class OptionFunctorSpec extends ObjectBehavior
         )->then(($kind, $value) ==>
             $this->shouldThrow(BadMethodCallException::class)->duringMap($kind($value), $x ==> $x + 1)
         );
-    }
-
-    private function genFunctionIntToString(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((int $x):string ==> (string)$x)]);
-    }
-
-    private function genFunctionStringToInt(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x))]);
-    }
-
-    private function genFunctionStringToBool(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x) % 2 === 0)]);
-    }
-
-    private function genFunctionBoolToString(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((bool $x) ==> strlen($x) % 2 === 0)]);
-    }
-
-    private function genOption()
-    {
-        return new MapGen($x ==> Option($x), new IntGen());
     }
 }

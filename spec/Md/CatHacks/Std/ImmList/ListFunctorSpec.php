@@ -11,21 +11,20 @@ use Md\CatHacks\Laws\InvariantLaws;
 use Md\CatHacks\Laws\FunctorLaws;
 
 use Md\PropertyTesting\Generator\ImmListGenerator as ListGen;
-use Md\PropertyTesting\Generator\Function1Generator as FuncGen;
+use Md\PropertyTesting\Generator\RandomContainersGenerator;
 
 use BadMethodCallException;
 
 use Eris\TestTrait;
 use Eris\Generator\IntegerGenerator as IntGen;
-use Eris\Generator\StringGenerator as StringGen;
 use Eris\Generator\ElementsGenerator as ElementsGen;
-use Eris\Generator\OneOfGenerator as OneOfGen;
 
 class ListFunctorSpec extends ObjectBehavior
 {
     use TestTrait;
     use InvariantLaws;
     use FunctorLaws;
+    use RandomContainersGenerator;
 
     public
     function it_is_a_functor()
@@ -111,30 +110,5 @@ class ListFunctorSpec extends ObjectBehavior
         )->then(($kind, $value) ==>
             $this->shouldThrow(BadMethodCallException::class)->duringMap($kind($value), $x ==> $x + 1)
         );
-    }
-
-    private function genRandomList(): ListGen
-    {
-        return new ListGen(new OneOfGen([new IntGen, new StringGen]));
-    }
-
-    private function genFunctionIntToString(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((int $x):string ==> (string)$x)]);
-    }
-
-    private function genFunctionStringToInt(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x))]);
-    }
-
-    private function genFunctionStringToBool(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((string $x) ==> strlen($x) % 2 === 0)]);
-    }
-
-    private function genFunctionBoolToString(): ElementsGen
-    {
-        return ElementsGen::fromArray([Function1((bool $x) ==> strlen($x) % 2 === 0)]);
     }
 }

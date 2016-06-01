@@ -9,9 +9,13 @@ use Md\CatHacks\Categories\Applicative;
 use Md\CatHacks\Std\Option\OptionApplicative;
 use BadMethodCallException;
 
+use Md\CatHacks\Laws\ApplicativeLaws;
+
 use Eris\TestTrait;
 use Eris\Generator\IntegerGenerator as IntGen;
 use Eris\Generator\ElementsGenerator as ElementsGen;
+
+use Md\PropertyTesting\Generator\RandomContainersGenerator;
 
 /**
  * Had to declared file `decl` and use the `public` for methods
@@ -24,11 +28,23 @@ use Eris\Generator\ElementsGenerator as ElementsGen;
 class OptionApplicativeSpec extends ObjectBehavior
 {
     use TestTrait;
+    use ApplicativeLaws;
+    use RandomContainersGenerator;
 
     public
     function it_is_an_applicative()
     {
         $this->shouldHaveType(Applicative::class);
+    }
+
+    public
+    function it_obeys_the_identity_law_of_applicative()
+    {
+        $this->forAll(
+            $this->genOption()
+        )->then($fa ==>
+            expect($this->applicativeIdentity($fa))->toBe(true)
+        );
     }
 
     public

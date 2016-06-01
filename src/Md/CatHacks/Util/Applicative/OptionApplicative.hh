@@ -11,6 +11,13 @@ use BadMethodCallException;
 trait OptionApplicative
 {
     use OptionFunctor;
+    public function pure<TA>(TA $a): Kind<TA>
+    {
+        if (!$this instanceof Option) {
+            throw new BadMethodCallException();
+        }
+        return Applicative::instance()->pure($a);
+    }
 
     public function apply<TA,TB>(Kind<(function(TA):TB)> $f): Kind<TB>
     {

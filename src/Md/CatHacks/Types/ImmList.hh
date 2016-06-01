@@ -6,7 +6,7 @@ use Md\CatHacks\Util\Applicative\ListApplicative;
 
 use HH\ImmVector, BadMethodCallException;
 
-final class ImmList<T> implements Kind<T>
+final class ImmList<+T> implements Kind<T>
 {
     use ListApplicative;
     public function __construct(private ImmVector<T> $values) { }
