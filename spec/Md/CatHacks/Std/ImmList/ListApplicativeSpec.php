@@ -61,6 +61,18 @@ use Md\PropertyTesting\Generator\RandomContainersGenerator;
     }
 
     public
+    function it_obeys_the_interchange_law_of_applicative()
+    {
+        $this->forAll(
+            $this->genRandomList(),
+            new IntGen(),
+            $this->genFunctionIntToString()
+        )->then(($fa, $a, $f) ==> {
+            expect($this->applicativeInterchange($fa, $a, ImmList($f->get())))->toBe(true);
+        });
+    }
+
+    public
     function it_can_be_constructed_with_instance()
     {
         $this->beConstructedThrough('instance');

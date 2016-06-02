@@ -11,8 +11,13 @@ trait ApplicativeLaws
         return $fa->apply($fa->pure($a ==> $a)) == $fa;
     }
 
-    public function applicativeHomomorphism<TA, TB>(Kind<TA> $fa, A $a, (function(TA):TB) $f): bool
+    public function applicativeHomomorphism<TA, TB>(Kind<TA> $fa, TA $a, (function(TA):TB) $f): bool
     {
         return $fa->pure($a)->apply($fa->pure($f)) == $fa->pure($f($a));
+    }
+
+    public function applicativeInterchange<TA,TB>(Kind<TA> $fa, TA $a, Kind<(function(TA):TB)> $ff): bool
+    {
+        return $fa->pure($a)->apply($ff) == $ff->apply($fa->pure($f ==> $f($a)));
     }
 }
