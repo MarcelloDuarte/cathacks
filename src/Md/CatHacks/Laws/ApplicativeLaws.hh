@@ -20,4 +20,9 @@ trait ApplicativeLaws
     {
         return $fa->pure($a)->apply($ff) == $ff->apply($fa->pure($f ==> $f($a)));
     }
+
+    public function applicativeMap<TA,TB>(Kind<TA> $fa, (function(TA):TB) $f): bool
+    {
+        return $fa->map($f) == $fa->apply($fa->pure($f));
+    }
 }

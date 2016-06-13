@@ -73,6 +73,17 @@ use Md\PropertyTesting\Generator\RandomContainersGenerator;
     }
 
     public
+    function it_obeys_the_map_law_of_applicative()
+    {
+        $this->forAll(
+            $this->genRandomList(),
+            $this->genFunctionIntToString()
+        )->then(($fa, $f) ==> {
+            expect($this->applicativeMap($fa, $f->get()))->toBe(true);
+        });
+    }
+
+    public
     function it_can_be_constructed_with_instance()
     {
         $this->beConstructedThrough('instance');
