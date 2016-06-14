@@ -12,6 +12,7 @@ use Md\CatHacks\Std\ImmList\ListFlatmap;
 use Md\CatHacks\Std\ImmList\ListFunctor;
 
 use Eris\TestTrait;
+use Eris\Generator\IntegerGenerator as IntGen;
 
 use Md\PropertyTesting\Generator\RandomContainersGenerator;
 
@@ -43,6 +44,18 @@ class ListMonadSpec extends ObjectBehavior
             $this->genFunctionStringToFInt('ImmList')
         )->then(($fa, $f, $g) ==>
             expect($this->flapMapAssociativity($fa, $f->get(), $g->get()))->toBe(true)
+        );
+    }
+
+    public
+    function it_obeys_the_flatmap_left_identity_law()
+    {
+        $this->forAll(
+            $this->genRandomList(),
+            new IntGen(),
+            $this->genFunctionIntToFString('ImmList')
+        )->then(($fa, $a, $f) ==>
+            expect($this->leftIdentity($fa, $a, $f->get()))->toBe(true)
         );
     }
 }

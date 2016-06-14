@@ -12,6 +12,7 @@ use Md\CatHacks\Std\Option\OptionFlatmap;
 use Md\CatHacks\Std\Option\OptionFunctor;
 
 use Eris\TestTrait;
+use Eris\Generator\IntegerGenerator as IntGen;
 
 use Md\PropertyTesting\Generator\RandomContainersGenerator;
 
@@ -43,6 +44,18 @@ class OptionMonadSpec extends ObjectBehavior
             $this->genFunctionStringToFInt('Option')
         )->then(($fa, $f, $g) ==>
             expect($this->flapMapAssociativity($fa, $f->get(), $g->get()))->toBe(true)
+        );
+    }
+
+    public
+    function it_obeys_the_flatmap_left_identity_law()
+    {
+        $this->forAll(
+            $this->genOption(),
+            new IntGen(),
+            $this->genFunctionIntToFString('Option')
+        )->then(($fa, $a, $f) ==>
+            expect($this->leftIdentity($fa, $a, $f->get()))->toBe(true)
         );
     }
 }

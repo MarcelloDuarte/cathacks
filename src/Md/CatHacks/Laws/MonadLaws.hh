@@ -8,4 +8,9 @@ trait MonadLaws
     {
         return $fa->flatMap($f)->flatMap($g) == $fa->flatMap( $a ==> $f($a)->flatMap( $b ==> $g($b)) );
     }
+
+    public function leftIdentity<TA,TB>(Kind<TA> $fa, TA $a, (function(TA):Kind<TB>) $f): bool
+    {
+        return $fa->pure($a)->flatMap($f) == $f($a);
+    }
 }
