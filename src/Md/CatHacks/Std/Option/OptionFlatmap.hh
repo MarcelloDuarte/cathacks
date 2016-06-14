@@ -12,4 +12,10 @@ class OptionFlatmap extends OptionFunctor implements Flatmap
     {
         return $fa == None() ? None() : ($f($fa->get()) ?: None());
     }
+
+    <<__Override>>
+    public static function instance(): OptionFlatmap
+    {
+        return new OptionFlatmap();
+    }
 }

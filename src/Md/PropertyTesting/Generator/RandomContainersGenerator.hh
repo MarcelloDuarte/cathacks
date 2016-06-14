@@ -1,8 +1,10 @@
-<?hh
+<?hh // decl
 
 namespace Md\PropertyTesting\Generator;
 
 use Md\PropertyTesting\Generator\ImmListGenerator as ListGen;
+
+use Md\CatHacks\Types\Kind;
 
 use Eris\Generator\IntegerGenerator as IntGen;
 use Eris\Generator\StringGenerator as StringGen;
@@ -35,6 +37,20 @@ trait RandomContainersGenerator
     private function genFunctionBoolToString(): ElementsGen
     {
         return ElementsGen::fromArray([Function1((bool $x) ==> strlen($x) % 2 === 0)]);
+    }
+
+    private function genFunctionIntToFString(mixed $f): mixed
+    {
+        if (is_callable($f)) {
+            return ElementsGen::fromArray([Function1((int $x):Kind<string> ==> \call_user_func_array($f, [(string)$x]))]);
+        }
+    }
+
+    private function genFunctionStringToFInt(mixed $f): mixed
+    {
+        if (is_callable($f)) {
+            return ElementsGen::fromArray([Function1((string $x):Kind<int> ==> \call_user_func_array($f, [strlen($x)]))]);
+        }
     }
 
     private function genOption()

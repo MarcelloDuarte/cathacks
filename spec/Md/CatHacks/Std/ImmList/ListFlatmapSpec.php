@@ -43,9 +43,9 @@ class ListFlatmapSpec extends ObjectBehavior
         $this->forAll(
             new SeqGen(ElementsGen::fromArray([None(), 1, 2, 3]))
         )->then($list ==>
-            $this->flatMap(ImmList(...$list), $x ==> Some($x + 1))
+            $this->flatMap(ImmList(...$list), $x ==> $x instanceof None ? None() : Some($x + 1))
                 ->shouldBeLike(ImmList(
-                ...array_map($x ==> ($x instanceof None) ? None() : ($x + 1), $list)
+                ...array_map($x ==> ($x + 1), array_filter($list, $x ==> !$x instanceof None))
             ))
         );
     }
