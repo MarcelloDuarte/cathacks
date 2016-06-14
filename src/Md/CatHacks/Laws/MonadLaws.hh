@@ -13,4 +13,9 @@ trait MonadLaws
     {
         return $fa->pure($a)->flatMap($f) == $f($a);
     }
+
+    public function rightIdentity<TA,TB>(Kind<TA> $fa): bool
+    {
+        return $fa->flatMap($a ==> $fa->pure($a)) == $fa;
+    }
 }

@@ -58,4 +58,14 @@ class ListMonadSpec extends ObjectBehavior
             expect($this->leftIdentity($fa, $a, $f->get()))->toBe(true)
         );
     }
+
+    public
+    function it_obeys_the_flatmap_right_identity_law()
+    {
+        $this->forAll(
+            $this->genRandomList()
+        )->then($fa ==>
+            expect($this->rightIdentity($fa))->toBe(true)
+        );
+    }
 }
