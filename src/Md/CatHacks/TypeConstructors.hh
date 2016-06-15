@@ -14,7 +14,7 @@ function None<T>(): Option<T>
 
 function Option<T>(T $value): Option<T>
 {
-    return $value === null ? None() : Some($value);
+    return Some($value);
 }
 
 function ImmList<T>(T... $values): ImmList<T>
