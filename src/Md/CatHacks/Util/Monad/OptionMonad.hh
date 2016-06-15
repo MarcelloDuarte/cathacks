@@ -17,4 +17,13 @@ trait OptionMonad
         }
         return Monad::instance()->flatMap($this, $f);
     }
+
+
+    public function flatten<TA>(): Kind<TA>
+    {
+        if (!$this instanceof Option) {
+            throw new BadMethodCallException();
+        }
+        return Monad::instance()->flatten($this);
+    }
 }

@@ -68,4 +68,14 @@ class OptionMonadSpec extends ObjectBehavior
             expect($this->rightIdentity($fa))->toBe(true)
         );
     }
+
+    public
+    function it_implements_flatten()
+    {
+        $this->forAll(
+            new IntGen(),
+        )->then($a ==>
+            $this->flatten(Some(Some(Some($a))))->shouldBeLike(Some(Some($a)))
+        );
+    }
 }

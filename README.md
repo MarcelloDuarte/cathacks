@@ -75,4 +75,8 @@ hphpd> echo Some(1)->flatMap($x ==> None())
 None
 hphpd> echo ImmList(1,2,3)->flatMap($x ==> ImmList(Some($x + 1)))
 List(Some(2),Some(3),Some(4))
+hphpd> echo Some(Some(Some(4)))->flatten()
+Some(Some(4))
+hphpd> echo ImmList(Some(Some(4)))->flatten()
+List(Some(4))
 ```

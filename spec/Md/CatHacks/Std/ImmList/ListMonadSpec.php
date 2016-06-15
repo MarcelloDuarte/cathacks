@@ -68,4 +68,14 @@ class ListMonadSpec extends ObjectBehavior
             expect($this->rightIdentity($fa))->toBe(true)
         );
     }
+
+    public
+    function it_implements_flatten()
+    {
+        $this->forAll(
+            new IntGen(),
+        )->then($a ==>
+            $this->flatten(ImmList(Some(Some($a))))->shouldBeLike(ImmList(Some($a)))
+        );
+    }
 }
