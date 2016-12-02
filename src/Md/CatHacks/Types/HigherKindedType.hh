@@ -2,7 +2,7 @@
 
 namespace Md\CatHacks\Types;
 
-interface Kind
+interface HigherKindedType<+TA>
 {
-	
+
 }

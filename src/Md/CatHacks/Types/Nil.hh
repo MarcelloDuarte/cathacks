@@ -2,7 +2,6 @@
 
 namespace Md\CatHacks\Types;
 
-interface Kind
+final class Nil<TA> extends ImmList<TA>
 {
-	
 }
